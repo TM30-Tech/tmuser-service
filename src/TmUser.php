@@ -5,7 +5,7 @@ namespace TM30\TmUser;
 
 class TmUser {
 
-    protected  $guzzleService;
+    protected $guzzleService;
     protected $client_id;
     protected $client_secret;
     protected $base_url;
@@ -131,13 +131,13 @@ class TmUser {
         
     }
 
-    public function fetchAllUsers() {
-      
+    public function fetchAllUsers($authorisation) {
+        $authorisation = '';
         $url = $this->base_url.'/users';
         $params = [
 
         ];
-        $authorisation = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjp7ImlkIjoiM2FkMjkxNTYtY2QzNi00MmY3LWFlMGItN2Y2YzhmZThiZTRlIiwicm9sZUlkIjoiZGI5ZDFlOWQtOGIxNi00NGI2LTg0ZDctNjUwNzJlZDdiNjJkIiwidXNlcklkIjoiNTVlNjdjYWMtZTc0Yy00NzJmLWJiYWEtMDc1OWQwNzg1YzU5IiwiZW1haWwiOiJhZG1pbkB1c2VyLXNlcnZpY2UuY29tIiwicGhvbmVOdW1iZXIiOm51bGwsIm1ldGEiOm51bGwsInByb2ZpbGUiOnsiaWQiOiI1NWU2N2NhYy1lNzRjLTQ3MmYtYmJhYS0wNzU5ZDA3ODVjNTkiLCJ0eXBlIjoiYWRtaW4iLCJuYW1lIjoiQWRtaW4gVXNlci1zZXJ2aWNlIiwibWV0YSI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxOS0xMS0wNlQxNjo0NjozOSswMDowMCIsInVwZGF0ZWRBdCI6IjIwMTktMTEtMDZUMTY6NDY6MzkrMDA6MDAifX0sImNsaWVudElkIjoiZGVmYXVsdCIsImF1dGhvcmlzZWRTZXJ2aWNlIjpbInN1cHBvcnQtc2VydmljZSIsInBheW1lbnQtc2VydmljZSJdLCJpYXQiOjE1NzMxMjg1MzAsImF1ZCI6InZhcy1hZ2ciLCJpc3MiOiJ2YXMtYXV0aCIsInN1YiI6InZhcy1hZ2cifQ.YhsVnVJ77ePj2w70IKM88SYsCqRA1rCfBeTpFTfyNLFX_E5pLTCb73liRrI4RKAtaX194z5ljl90S9fmS0t9xQ';
+        
         return $this->guzzleService->getRequest($url, $params,  $this->getClientHeader(null, $authorisation));
     }
 
