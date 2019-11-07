@@ -1,0 +1,32 @@
+{
+    "name": "tm30/tmuser-service",
+    "description": "TM30 User's Services laravel wrapper",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "VictorAlagwu",
+            "email": "victoralagwu@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TM30\\TmUser\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TM30\\TmUser\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php" : "^7.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/config": "5.8.*|^6.0",
+        "illuminate/database": "5.8.*|^6.0",
+        "illuminate/support": "5.8.*|^6.0"
+    }
+}
