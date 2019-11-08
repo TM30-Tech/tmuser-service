@@ -2,6 +2,7 @@
 
 namespace TM30\TmUser;
 
+use Illuminate\Support\Facades\Request;
 
 class TmUser {
 
@@ -9,6 +10,7 @@ class TmUser {
     protected $client_id;
     protected $client_secret;
     protected $base_url;
+    protected $token;
 
     public function __construct()
     {
@@ -16,18 +18,19 @@ class TmUser {
         $this->client_id = config('tmuserservice.tmuser.client_id');
         $this->client_secret = config('tmuserservice.tmuser.client_secret');
         $this->base_url = config('tmuserservice.tmuser.base_url');
+        $this->token = request()->bearerToken() ?? '';
     }
 
     public static function make() {
         return new static;
     }
 
-    public function getClientHeader($default = null, $authorisation = null) {
+    public function getClientHeader() {
         return [
             'Accept' => 'application/json',
-            'client_id' => is_null($default) ? $this->client_id : 'default',
-            'client_secret' => is_null($default) ? $this->client_secret : 'default',
-            'Authorization' => is_null($authorisation) ? '' : 'Bearer '. $authorisation
+            'client_id' => $this->client_id ?? '',
+            'client_secret' => $this->client_secret ?? '',
+            'Authorization' => ($this->token) ? 'Bearer '. $this->token : ''
         ];
     }
 
@@ -55,70 +58,43 @@ class TmUser {
      *
      * @return void
      */
-    public function createPassword() {
+    public function createPassword($payload) {
         $url = $this->base_url.'/auths/password/create';
-        $data = [
-
-        ];
-        $authorisation = '';
-        return $this->guzzleService->postRequest($url, $data, $this->getClientHeader(null, $authorisation));
+        return $this->guzzleService->postRequest($url, $payload, $this->getClientHeader());
     }
     
-    public function login() {
+    public function login(array $payload) {
         $url = $this->base_url.'/auths/login';
-        $data = [
-
-        ];
-
-        return $this->guzzleService->postRequest($url, $data , $this->getClientHeader('true'));
+        return $this->guzzleService->postRequest($url, $payload , $this->getClientHeader());
     }
 
-    public function resetPassword() {
+    public function resetPassword($params) {
         $url = $this->base_url.'/auths/reset/password';
-        $params = [
-
-        ];
         return $this->guzzleService->getRequest($url, $params);
     }
 
     public function user() {
         $url = $this->base_url.'/auths/me';
-        $params = [
-
-        ];
-        $userToken = '';
-        return $this->guzzleService->getRequest($url, $params, $this->getClientHeader('true', $userToken));
+        return $this->guzzleService->getRequest($url, [], $this->getClientHeader());
     }
 
-    public function refreshToken() {
+    public function refreshToken($data = []) {
         $url = $this->base_url.'/auths/token/refresh';
-        $data = [
-
-        ];
-        $userToken = '';
-        return $this->guzzleService->postRequest($url, $data, $this->getClientHeader('true', $userToken));
+        return $this->guzzleService->postRequest($url, $data, $this->getClientHeader());
     }
 
-    public function sendVerificationEmail() {
+    public function sendVerificationEmail($params) {
         $url = $this->base_url.'/auths/verification/email/resend';
-        $params = [
-
-        ];
-        $userToken = '';
-        return $this->guzzleService->getRequest($url, $params, $this->getClientHeader(null, $userToken));
-      
+        return $this->guzzleService->getRequest($url, $params, $this->getClientHeader());
     }
 
 
     /***
      * Users
      */
-    public function create() {
-        $url = $url = $this->base_url.'/create';
-        $data = [
-
-        ];
-        return $this->guzzleService->postRequest($url, $data, $this->getClientHeader());
+    public function create(array $payload) {
+        $url = $url = $this->base_url.'/users';
+        return $this->guzzleService->postRequest($url, $payload, $this->getClientHeader());
     }
 
     public function updateUser() {
@@ -131,14 +107,10 @@ class TmUser {
         
     }
 
-    public function fetchAllUsers($authorisation) {
-        $authorisation = '';
+    public function fetchAllUsers($params = []) {
         $url = $this->base_url.'/users';
-        $params = [
-
-        ];
         
-        return $this->guzzleService->getRequest($url, $params,  $this->getClientHeader(null, $authorisation));
+        return $this->guzzleService->getRequest($url, $params,  $this->getClientHeader());
     }
 
     public function findUser(){

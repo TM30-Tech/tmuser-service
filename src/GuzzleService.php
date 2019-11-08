@@ -24,7 +24,8 @@ class GuzzleService extends Client
             return $this->successJsonResponse($payload);
         } catch (RequestException $e) {
             Log::error('There was an error with the POST Request');
-            return errorJsonResponse($e);
+            
+            return $this->errorJsonResponse($e);
         }
     }
 
@@ -37,7 +38,7 @@ class GuzzleService extends Client
             return $this->successJsonResponse($payload);
         } catch (RequestException $e) {
             Log::error('There was an error with the Get Request');
-            return errorJsonResponse($e);
+            return $this->errorJsonResponse($e);
         }
     }
 
@@ -50,7 +51,7 @@ class GuzzleService extends Client
            return $this->successJsonResponse($payload);
         } catch (RequestException $e) {
             Log::error('There was an error with the PUT Request');
-            return errorJsonResponse($e);
+            return $this->errorJsonResponse($e);
         }
     }
 
@@ -61,14 +62,15 @@ class GuzzleService extends Client
             'message' => 'Request was successful',
             "statusCode" => $payload->getStatusCode(),
             'raw' => $payload->getBody()
-        ], 200);
+        ], $payload->getStatusCode() ?? 200);
     }
 
     function errorJsonResponse($e) {
         return response ()->json ([
             'status' => 'error',
             'data' =>  [],
+            'statusCode' => $e->getCode(),
             'message' => 'Error details: '.$e->getMessage(),
-        ], 400);
+        ], $e->getCode() ?? 400);
     }
 }
