@@ -2,7 +2,6 @@
 
 namespace TM30\TmUser;
 
-use Illuminate\Support\Facades\Request;
 
 class TmUser {
 
