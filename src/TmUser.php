@@ -96,14 +96,10 @@ class TmUser {
         return $this->guzzleService->postRequest($url, $payload, $this->getClientHeader());
     }
 
-    public function updateUser() {
-        $user_id = '';
+    public function updateUser(array $payload) {
+        $user_id = $payload['user_id'];
         $url = $this->base_url.'/users/'.$user_id;
-        $data = [
-
-        ];
-        return $this->guzzleService->putRequest($url, $data);
-        
+        return $this->guzzleService->putRequest($url, $payload, $this->getClientHeader());
     }
 
     public function fetchAllUsers($params = []) {
@@ -112,13 +108,10 @@ class TmUser {
         return $this->guzzleService->getRequest($url, $params,  $this->getClientHeader());
     }
 
-    public function findUser(){
-        $user_id = '';
+    public function findUser($payload){
+        $user_id = $payload['user_id'];
         $url = $this->base_url.'/users/'.$user_id;
-        $params = [
-
-        ];
-        return $this->guzzleService->getRequest($url, $params);
+        return $this->guzzleService->getRequest($url, $payload, $this->getClientHeader());
     }
 
     public function createRole() {
