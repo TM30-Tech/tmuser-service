@@ -44,7 +44,7 @@ class GuzzleService extends Client
 
     public function putRequest($url, $data = [], $header =  [  'Accept' => 'application/json' ]) {
         try {
-            $payload = $this->client->request('PUT', $url, [
+            $payload = $this->client->put($url, [
                 'headers' => $header,
                 'json' => $data
             ]);
